@@ -1,8 +1,8 @@
 # Configuration file for the Income Prediction Model
 
 model:
-  name: "income_predictor"
-  type: "xgboost"  # xgboost, lightgbm, catboost
+  name: "alpha_wealth_neural"
+  type: "alpha_wealth"  # xgboost, lightgbm, catboost, alpha_wealth
   random_state: 42
   test_size: 0.2
   validation_size: 0.1
@@ -29,6 +29,7 @@ paths:
   models_dir: "models"
   raw_data: "data/train.csv"
   test_data: "data/test.csv"
+  hackathon_test_data: "data/hackathon_income_test.csv"  # Основной test файл для API
 
 api:
   host: "0.0.0.0"
@@ -45,25 +46,36 @@ products:
   credit_card:
     min_income: 30000
     max_rate: 25.9
-    description: "Кредитная карта с льготным периодом"
+    description: "Активное использование мобильного банка"
+    product_name: "Премиальная дебетовая карта"
   
   consumer_credit:
     min_income: 50000
     max_rate: 15.9
-    description: "Потребительский кредит на любые цели"
+    description: "Стабильный доход и низкая долговая нагрузка"
+    product_name: "Потребительский кредит"
+  
+  auto_credit:
+    min_income: 60000
+    max_rate: 12.5
+    description: "Стабильный доход и низкая долговая нагрузка"
+    product_name: "Автокредит до 1.5 млн"
   
   mortgage:
     min_income: 80000
     max_rate: 8.5
-    description: "Ипотечный кредит с низкой процентной ставкой"
+    description: "Высокий стабильный доход"
+    product_name: "Ипотечный кредит"
   
   investment_account:
     min_income: 100000
-    description: "Инвестиционный счет с профессиональным управлением"
+    description: "Высокий доход и потенциал для инвестиций"
+    product_name: "Инвестиционный счет"
   
   premium_account:
     min_income: 200000
-    description: "Премиум-счет с персональным менеджером"
+    description: "Премиум-клиент с высоким доходом"
+    product_name: "Премиум-счет"
 
 monitoring:
   enable: true

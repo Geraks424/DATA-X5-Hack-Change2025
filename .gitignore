@@ -61,3 +61,16 @@ Thumbs.db
 *.log
 logs/
 
+# Virtual environments
+venv/
+env/
+ENV/
+
+# Install scripts logs
+install.log
+setup.log
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
