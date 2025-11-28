@@ -1,10 +1,13 @@
 """
 Script to generate submission file for the hackathon platform
+Поддерживает различные форматы данных (Income/income, Id/id)
 """
 import argparse
 import pandas as pd
 from pathlib import Path
 from src.predictor import IncomePredictor
+from src.alpha_predictor import AlphaWealthPredictor
+from src.data_processing import DataProcessor
 import os
 
 
@@ -35,49 +38,67 @@ def main():
     
     print(f"📊 Loading model from {args.model}...")
     try:
-        predictor = IncomePredictor(args.model)
+        # Пробуем загрузить как AlphaWealth, если не получится - стандартный
+        try:
+            predictor = AlphaWealthPredictor(args.model)
+            print("   ✅ AlphaWealth Neural loaded")
+        except:
+            predictor = IncomePredictor(args.model)
+            print("   ✅ Standard predictor loaded")
     except Exception as e:
         print(f"❌ Error loading model: {str(e)}")
         return
     
     print(f"📂 Loading test data from {args.test_data}...")
+    processor = DataProcessor()
     try:
-        test_data = pd.read_csv(args.test_data)
+        test_data = processor.load_data(args.test_data)
         print(f"   Loaded {len(test_data)} samples")
+        print(f"   Columns: {list(test_data.columns)[:5]}...")
     except Exception as e:
         print(f"❌ Error loading test data: {str(e)}")
         return
     
-    # Check for ID column
-    if 'id' not in test_data.columns:
-        print("⚠️  Warning: 'id' column not found. Using index as ID.")
-        test_data['id'] = test_data.index + 1
+    # Определяем ID столбец (поддержка Id/id/ID)
+    id_col = processor.detect_id_column(test_data)
+    if id_col is None:
+        print("⚠️  Warning: ID column not found. Using index as ID.")
+        ids = pd.Series(range(1, len(test_data) + 1))
+        id_col_name = "Id"
+    else:
+        ids = test_data[id_col].copy()
+        id_col_name = id_col
+        print(f"   ✅ ID column detected: {id_col}")
     
-    # Get IDs before prediction
-    ids = test_data['id'].copy()
-    
-    # Remove ID column for prediction (if it exists)
-    test_data_for_pred = test_data.drop(columns=['id'], errors='ignore')
+    # Удаляем ID столбец для предсказания
+    drop_cols = [id_col] if id_col else []
+    test_data_for_pred = test_data.drop(columns=drop_cols, errors='ignore')
     
     print("🔮 Generating predictions...")
     try:
         predictions = predictor.predict(test_data_for_pred)
-        print(f"   Generated {len(predictions)} predictions")
+        print(f"   ✅ Generated {len(predictions)} predictions")
         print(f"   Mean prediction: {predictions.mean():.2f} ₽")
         print(f"   Min prediction: {predictions.min():.2f} ₽")
         print(f"   Max prediction: {predictions.max():.2f} ₽")
     except Exception as e:
         print(f"❌ Error generating predictions: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return
+    
+    # Определяем формат submission (поддержка Income/income)
+    # Проверяем, есть ли sample_submission для формата
+    income_col_name = "Income"  # По умолчанию заглавная, как в примере
     
     # Create submission dataframe
     submission = pd.DataFrame({
-        'id': ids,
-        'income': predictions
+        id_col_name: ids,
+        income_col_name: predictions
     })
     
     # Ensure income is non-negative and reasonable
-    submission['income'] = submission['income'].clip(lower=0)
+    submission[income_col_name] = submission[income_col_name].clip(lower=0)
     
     # Save submission
     print(f"💾 Saving submission to {args.output}...")
@@ -86,6 +107,7 @@ def main():
     print(f"✅ Submission file created successfully!")
     print(f"   File: {args.output}")
     print(f"   Shape: {submission.shape}")
+    print(f"   Columns: {list(submission.columns)}")
     print(f"\n📋 First 5 predictions:")
     print(submission.head().to_string(index=False))
     
