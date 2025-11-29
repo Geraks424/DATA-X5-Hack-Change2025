@@ -10,18 +10,23 @@ form.addEventListener('submit', async (e) => {
   });
 
   try {
-    const response = await fetch('http://127.0.0.1:5000/predict', {
+    // Используем относительный путь — работает и при локальной разработке и при деплое за одним доменом
+    const response = await fetch('/predict', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(data)
     });
+
     const result = await response.json();
-    if (result.predicted_income !== undefined) {
+    if (response.ok && result.predicted_income !== undefined) {
       resultDiv.textContent = `Прогнозируемый доход: ${result.predicted_income.toFixed(2)}₽`;
+      resultDiv.style.color = 'green';
     } else {
-      resultDiv.textContent = `Ошибка: ${result.error}`;
+      resultDiv.textContent = `Ошибка: ${result.error || 'Неизвестная ошибка'}`;
+      resultDiv.style.color = 'red';
     }
   } catch (err) {
     resultDiv.textContent = 'Ошибка подключения к серверу';
+    resultDiv.style.color = 'red';
   }
 });

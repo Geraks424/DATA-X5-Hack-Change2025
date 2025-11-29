@@ -1,6 +1,12 @@
 import pandas as pd
 import numpy as np
 
+def _safe_series(df: pd.DataFrame, col: str) -> pd.Series:
+    """Возвращает Series с нулевыми значениями, если столбец отсутствует."""
+    if col in df.columns:
+        return df[col].fillna(0)
+    else:
+        return pd.Series(0, index=df.index)
 
 def create_client_archetypes(df: pd.DataFrame) -> pd.DataFrame:
     """
@@ -10,42 +16,41 @@ def create_client_archetypes(df: pd.DataFrame) -> pd.DataFrame:
 
     # 1. ZOOMERS (молодые, tech-savvy)
     df['zoomers_score'] = (
-            df.get('mob_cnt_days', 0).fillna(0) +
-            df.get('device_iphone_avg', 0).fillna(0) * 10 +
-            df.get('vert_has_app_ru_tinkoff_investing', 0).fillna(0) * 20 +
-            df.get('vert_has_app_ru_vtb_invest', 0).fillna(0) * 15
+            _safe_series(df, 'mob_cnt_days') +
+            _safe_series(df, 'device_iphone_avg') * 10 +
+            _safe_series(df, 'vert_has_app_ru_tinkoff_investing') * 20 +
+            _safe_series(df, 'vert_has_app_ru_vtb_invest') * 15
     )
 
     # 2. MILLENNIALS (25-40 лет, профессионалы)
     df['millennials_score'] = (
-            df.get('turn_cur_cr_avg_v2', 0).fillna(0) / (df.get('age', 1).fillna(1) + 1) +
-            df.get('dp_ils_total_seniority', 0).fillna(0) * 0.1 +
-            (df.get('hdb_bki_total_products', 0).fillna(0) > 0) * 10
+            _safe_series(df, 'turn_cur_cr_avg_v2') / (_safe_series(df, 'age') + 1) +
+            _safe_series(df, 'dp_ils_total_seniority') * 0.1 +
+            (_safe_series(df, 'hdb_bki_total_products') > 0) * 10
     )
 
     # 3. SMART SAVERS (финансовые оптимизаторы)
     df['smart_savers_score'] = (
-            df.get('hdb_bki_total_products', 0).fillna(0) * 5 +
-            df.get('hdb_bki_total_max_limit', 0).fillna(0) / (df.get('hdb_outstand_sum', 1).fillna(1) + 1) +
-            (df.get('hdb_ovrd_sum', 0).fillna(0) == 0) * 20
+            _safe_series(df, 'hdb_bki_total_products') * 5 +
+            _safe_series(df, 'hdb_bki_total_max_limit') / (_safe_series(df, 'hdb_outstand_sum') + 1) +
+            (_safe_series(df, 'hdb_ovrd_sum') == 0) * 20
     )
 
     # 4. ADVENTURER (активные путешественники)
     df['adventurer_score'] = (
-            df.get('avg_6m_travel', 0).fillna(0) * 0.01 +
-            df.get('avg_6m_hotels', 0).fillna(0) * 0.01 +
-            df.get('cntRegionTripsWavg1m', 0).fillna(0) * 2
+            _safe_series(df, 'avg_6m_travel') * 0.01 +
+            _safe_series(df, 'avg_6m_hotels') * 0.01 +
+            _safe_series(df, 'cntRegionTripsWavg1m') * 2
     )
 
     # 5. PROFESSIONALS (финансовые эксперты)
     df['professionals_score'] = (
-            (df.get('turn_cur_cr_avg_v2', 0).fillna(0) - df.get('turn_cur_db_avg_v2', 0).fillna(0)) /
-            (df.get('turn_cur_cr_avg_v2', 1).fillna(1) + 1) * 100 +
-            df.get('curr_rur_amt_cm_avg', 0).fillna(0) * 0.001 +
-            df.get('turn_save_db_min_v2', 0).fillna(0) * 0.1
+            (_safe_series(df, 'turn_cur_cr_avg_v2') - _safe_series(df, 'turn_cur_db_avg_v2')) /
+            (_safe_series(df, 'turn_cur_cr_avg_v2').replace(0, 1) + 1) * 100 +
+            _safe_series(df, 'curr_rur_amt_cm_avg') * 0.001 +
+            _safe_series(df, 'turn_save_db_min_v2') * 0.1
     )
 
-    # Определяем доминирующий архетип с помощью numpy
     archetype_cols = ['zoomers_score', 'millennials_score', 'smart_savers_score', 'adventurer_score',
                       'professionals_score']
     df['dominant_archetype'] = np.array(archetype_cols)[np.argmax(df[archetype_cols].values, axis=1)]
@@ -54,7 +59,6 @@ def create_client_archetypes(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-# 🎯 Генерация креативной истории по доходу и архетипу
 def generate_financial_story(income: float, archetype: str, age: int) -> str:
     stories = {
         'zoomers': [
@@ -84,7 +88,6 @@ def generate_financial_story(income: float, archetype: str, age: int) -> str:
     return archetype_stories[story_idx]
 
 
-# 📊 Получение инсайтов по архетипу
 def get_archetype_insights(archetype: str, income: float) -> dict:
     insights = {
         'zoomers': {
