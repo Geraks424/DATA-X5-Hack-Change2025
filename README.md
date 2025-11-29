@@ -1,318 +1,83 @@
-# 💰 Alfa-Bank Income Prediction Solution
+# Прогноз дохода клиента
 
-Полнофункциональное AI-решение для прогнозирования дохода клиентов и формирования персональных рекомендаций по финансовым продуктам для Альфа-Банка.
+Проект позволяет прогнозировать доход клиента банка на основе его финансового и цифрового поведения.
 
-## 🎯 Описание проекта
+## Структура проекта
 
-Решение включает:
-- **ML-модель** для точного предсказания дохода клиентов (метрика WMAE)
-- **Backend API** (FastAPI) для получения предсказаний и объяснений
-- **Web-интерфейс** (Streamlit) для визуализации и работы с моделью
-- **Систему рекомендаций** финансовых продуктов на основе прогноза
-- **SHAP-объяснения** для интерпретации предсказаний
-- **Мониторинг качества** модели в реальном времени
+```
+project/
+├─ backend/
+│   └─ app.py
+├─ frontend/
+│   ├─ index.html
+│   ├─ style.css
+│   └─ script.js
+├─ models/
+│   ├─ final_preprocessor.pkl
+│   ├─ final_stacking_model.pkl
+│   ├─ final_base_estimators.pkl
+│   └─ final_optimal_weights.pkl
+├─ data/
+│   ├─ hackathon_income_train.csv
+│   └─ hackathon_income_test.csv
+└─ README.md
+```
 
-## 📋 Требования
+## Установка
 
-- Python 3.9+
-- pip или conda
-
-## 🚀 Быстрый старт
-
-### 1. Установка зависимостей
+1. Создать виртуальное окружение:
 
 ```bash
-pip install -r requirements.txt
+python -m venv venv
 ```
 
-### 2. Подготовка данных
+2. Активировать его:
 
-Поместите файлы данных в директорию `data/`:
-- `data/train.csv` - обучающая выборка (должна содержать столбец `income`)
-- `data/test.csv` - тестовая выборка (для финальных предсказаний)
+- Windows: `venv\Scripts\activate`
+- Linux/macOS: `source venv/bin/activate`
 
-**Важно**: Если у вас нет данных, решение может работать с синтетическими данными для демонстрации функциональности.
-
-### 3. Обучение модели
+3. Установить зависимости:
 
 ```bash
-python train_model.py --data data/train.csv --output models/income_model.pkl
+pip install pandas numpy scikit-learn flask joblib
 ```
 
-Опции:
-- `--data` - путь к обучающим данным
-- `--model-type` - тип модели (`xgboost`, `lightgbm`, `catboost`)
-- `--output` - путь для сохранения модели
-- `--config` - путь к конфигурационному файлу
-
-### 4. Запуск Backend API
+## Генерация моделей
 
 ```bash
-python -m uvicorn src.api:app --reload --host 0.0.0.0 --port 8000
+python backend/train_models.py
 ```
 
-API будет доступен по адресу: http://localhost:8000
-
-### 5. Запуск Web-интерфейса
-
-В новом терминале:
+## Запуск сервера
 
 ```bash
-streamlit run streamlit_app.py
+python backend/app.py
 ```
 
-Интерфейс будет доступен по адресу: http://localhost:8501
+- Сервер доступен по адресу: `http://127.0.0.1:5000/`
+- Эндпоинт `/predict` принимает POST-запрос с JSON:
 
-## 📁 Структура проекта
-
-```
-.
-├── src/                          # Исходный код
-│   ├── __init__.py
-│   ├── data_processing.py       # Обработка данных и feature engineering
-│   ├── model_trainer.py         # Обучение моделей
-│   ├── predictor.py             # Предсказания
-│   ├── product_recommender.py   # Рекомендации продуктов
-│   ├── api.py                   # FastAPI backend
-│   └── monitoring.py            # Мониторинг модели
-├── data/                         # Данные
-│   ├── train.csv
-│   └── test.csv
-├── models/                       # Обученные модели
-│   └── income_model.pkl
-├── logs/                         # Логи и метрики
-│   └── metrics.json
-├── notebooks/                    # Jupyter notebooks для анализа
-├── train_model.py               # Скрипт обучения модели
-├── streamlit_app.py             # Streamlit веб-интерфейс
-├── config.yaml                  # Конфигурация
-├── requirements.txt             # Зависимости
-└── README.md                    # Документация
+```json
+{
+  "age": 30,
+  "turn_cur_cr_avg_v2": 50000,
+  "mob_cnt_days": 120,
+  "device_iphone_avg": 1,
+  "vert_has_app_ru_tinkoff_investing": 1
+}
 ```
 
-## 🔧 Основные возможности
+## Фронтенд
 
-### 1. Предсказание дохода
-- Ввод данных клиента через веб-интерфейс
-- Автоматическое предсказание дохода
-- API для программного доступа
+- Открыть `frontend/index.html` в браузере.
+- Ввести данные и нажать кнопку **Прогнозировать доход**.
+- Результат отображается на странице.
 
-### 2. Объяснение предсказаний (SHAP)
-- Визуализация вклада каждого признака
-- Waterfall-диаграммы
-- Текстовые объяснения
+## Зависимости
 
-### 3. Рекомендации продуктов
-- Автоматический подбор финансовых продуктов
-- Приоритизация на основе прогноза
-- Персонализированные условия
-
-### 4. Клиентская база
-- Пакетная обработка клиентов
-- Визуализация результатов
-- Экспорт данных
-
-### 5. Мониторинг
-- Метрики качества в реальном времени
-- История предсказаний
-- Отслеживание производительности
-
-## 📊 API Endpoints
-
-### Основные эндпоинты:
-
-- `GET /` - Информация об API
-- `GET /health` - Проверка работоспособности
-- `POST /predict` - Предсказание дохода для одного клиента
-- `POST /batch_predict` - Пакетное предсказание
-- `POST /shap_explain` - SHAP-объяснение предсказания
-- `GET /recommend/{income}` - Рекомендации продуктов по доходу
-- `GET /feature_importance` - Важность признаков модели
-
-### Пример использования API:
-
-```python
-import requests
-
-# Предсказание дохода
-response = requests.post(
-    "http://localhost:8000/predict",
-    json={
-        "data": {
-            "age": 35,
-            "employment_years": 5,
-            "education": "higher",
-            "city": "Moscow"
-        }
-    }
-)
-
-result = response.json()
-print(f"Предсказанный доход: {result['predicted_income']:.2f} ₽")
-print(f"Рекомендации: {result['recommendations']}")
-```
-
-## 🎨 Интерфейс
-
-Веб-интерфейс включает 4 основных раздела:
-
-1. **🔮 Предсказание дохода** - ввод данных клиента и получение прогноза
-2. **👥 Клиентская база** - пакетная обработка и анализ
-3. **📊 Аналитика модели** - важность признаков и статистика
-4. **📈 Мониторинг** - метрики качества и производительности
-
-## 📈 Метрики модели
-
-Модель оптимизирована для минимизации **WMAE** (Weighted Mean Absolute Error):
-
-```
-WMAE = sum(|y_true - y_pred| * weight) / sum(weight)
-```
-
-Дополнительные метрики:
-- MAE (Mean Absolute Error)
-- R² (Coefficient of Determination)
-- Feature Importance
-
-## 💡 Бизнес-ценность решения
-
-### Для банка:
-1. **Точная оценка платежеспособности** - снижение рисков при выдаче кредитов
-2. **Персонализация предложений** - повышение конверсии за счет релевантных продуктов
-3. **Оптимизация условий** - установка оптимальных процентных ставок
-4. **Соответствие требованиям ЦБ** - контроль кредитоспособности
-
-### Для клиентов:
-1. **Индивидуальные предложения** - продукты, соответствующие финансовым возможностям
-2. **Справедливые условия** - кредиты на основе реальной платежеспособности
-3. **Прозрачность** - понимание, почему предлагаются конкретные продукты
-
-## 🔍 Примеры использования
-
-### Обучение модели с XGBoost:
-```bash
-python train_model.py --data data/train.csv --model-type xgboost
-```
-
-### Обучение модели с LightGBM:
-```bash
-python train_model.py --data data/train.csv --model-type lightgbm
-```
-
-### Получение предсказаний для тестовой выборки:
-
-**Используя скрипт (рекомендуется):**
-```bash
-python generate_submission.py --test-data data/test.csv --model models/income_model.pkl --output submission.csv
-```
-
-**Или программно:**
-```python
-from src.predictor import IncomePredictor
-import pandas as pd
-
-# Загрузка модели
-predictor = IncomePredictor("models/income_model.pkl")
-
-# Загрузка тестовых данных
-test_data = pd.read_csv("data/test.csv")
-
-# Предсказания
-predictions = predictor.predict(test_data)
-
-# Сохранение результатов
-submission = pd.DataFrame({
-    'id': test_data['id'],
-    'income': predictions
-})
-submission.to_csv('submission.csv', index=False)
-```
-
-## 🛠️ Разработка
-
-### Формат данных
-
-Обучающие данные должны содержать:
-- Целевая переменная: `income` (доход клиента)
-- Признаки: числовые и категориальные характеристики клиента
-
-Пример структуры:
-```csv
-id,age,employment_years,education,city,income
-1,35,5,higher,Moscow,75000
-2,42,12,higher,St. Petersburg,120000
-```
-
-### Настройка конфигурации
-
-Редактируйте `config.yaml` для изменения:
-- Параметров модели
-- Финансовых продуктов
-- Настроек API и фронтенда
-
-## 📝 Лицензия
-
-Проект создан для образовательных целей в рамках хакатона Changellenge >> и Alfa-Bank.
-
-## 👥 Авторы
-
-Решение разработано для DATA-X5-Hack-Change2025
-
-## 🔗 Ссылки
-
-- [FastAPI Documentation](https://fastapi.tiangolo.com/)
-- [Streamlit Documentation](https://docs.streamlit.io/)
-- [SHAP Documentation](https://shap.readthedocs.io/)
-- [XGBoost Documentation](https://xgboost.readthedocs.io/)
-
-## ⚠️ Важные замечания
-
-1. **Модель требует обучения** перед использованием API и веб-интерфейса
-2. **Структура данных** должна соответствовать ожидаемому формату
-3. **Для продакшена** рекомендуется добавить аутентификацию и валидацию данных
-4. **Мониторинг** настроен на локальное хранение метрик в JSON
-
-## 🚀 Деплой
-
-### Локальный запуск (рекомендуется для демонстрации)
-
-1. Установите зависимости
-2. Обучите модель
-3. Запустите API: `uvicorn src.api:app`
-4. Запустите фронтенд: `streamlit run streamlit_app.py`
-
-### Docker (опционально)
-
-Создайте `Dockerfile` и `docker-compose.yml` для контейнеризации:
-
-```yaml
-version: '3.8'
-services:
-  api:
-    build: .
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./models:/app/models
-      - ./data:/app/data
-  
-  frontend:
-    build: .
-    command: streamlit run streamlit_app.py
-    ports:
-      - "8501:8501"
-    depends_on:
-      - api
-```
-
-## 📞 Поддержка
-
-При возникновении проблем:
-1. Проверьте, что все зависимости установлены
-2. Убедитесь, что модель обучена
-3. Проверьте формат данных
-4. Просмотрите логи в консоли
-
----
-
-**Удачи в решении! 🎉**
+- Python 3.8+
+- pandas
+- numpy
+- scikit-learn
+- flask
+- joblib
