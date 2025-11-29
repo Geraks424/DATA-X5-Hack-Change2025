@@ -12,11 +12,6 @@ project/
 │   ├─ index.html
 │   ├─ style.css
 │   └─ script.js
-├─ models/
-│   ├─ final_preprocessor.pkl
-│   ├─ final_stacking_model.pkl
-│   ├─ final_base_estimators.pkl
-│   └─ final_optimal_weights.pkl
 ├─ data/
 │   ├─ hackathon_income_train.csv
 │   └─ hackathon_income_test.csv
