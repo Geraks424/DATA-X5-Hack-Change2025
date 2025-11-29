@@ -33,7 +33,14 @@
         </div>
 
         <div id="result" class="result hidden">
-          <h3 class="prediction-title">Прогноз для Клиента #<span id="resultId"></span></h3>
+          <div class="client-info">
+            <img id="clientIcon" src="./icons/man_26-45.png" alt="Аватар клиента" class="client-icon" />
+            <div class="client-details">
+              <div><strong>Клиент #<span id="resultId"></span></strong></div>
+              <div><strong>Пол:</strong> <span id="clientGender"></span></div>
+              <div><strong>Возраст:</strong> <span id="clientAge"></span></div>
+            </div>
+          </div>
 
           <!-- Прогноз -->
           <div class="section">
@@ -52,7 +59,6 @@
             <div class="section-label">Персональные рекомендации</div>
             <div id="recommendations" class="recommendations"></div>
           </div>
-        </div>
       </div>
     </main>
   </div>

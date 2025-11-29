@@ -178,6 +178,36 @@ body {
   padding: 6px 0;
 }
 
+.client-info {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--alpha-border);
+}
+
+.client-icon {
+  width: 100px;
+  height: 112px;
+  object-fit: cover;
+  background: #f0f2f5;
+  border: 2px solid var(--alpha-border);
+  align-content: center;
+}
+
+.client-details {
+  font-size: 15px;
+}
+
+.client-details div {
+  margin: 2px 0;
+}
+
+.client-details strong {
+  color: var(--alpha-red);
+}
+
 /* Скрытие/показ */
 .hidden {
   display: none !important;
