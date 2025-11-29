@@ -1,0 +1,62 @@
+!<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Модель дохода — Альфа-Банк</title>
+  <link rel="stylesheet" href="/frontend/styles.css" />
+</head>
+<body>
+  <div class="alpha-app">
+    <header class="alpha-header">
+      <h1>Модель дохода — Альфа-Банк</h1>
+      <p>Точный прогноз — уверенные решения</p>
+    </header>
+
+    <main class="main-container">
+      <div class="alpha-card">
+        <h2 class="alpha-card-header">Выбор клиента</h2>
+
+        <div class="input-group">
+          <input
+            type="text"
+            id="clientIdInput"
+            placeholder="Введите ID клиента (например: 0, 1, 3, 12, 63)"
+          />
+          <button id="searchBtn">Получить прогноз</button>
+        </div>
+
+        <div id="error" class="error-message"></div>
+        <div id="loading" class="loading hidden">
+          <div class="loading-text">Получаем прогноз...</div>
+          <div class="spinner"></div>
+        </div>
+
+        <div id="result" class="result hidden">
+          <h3 class="prediction-title">Прогноз для Клиента #<span id="resultId"></span></h3>
+
+          <!-- Прогноз -->
+          <div class="section">
+            <div class="section-label">Прогнозируемый доход</div>
+            <div id="income" class="income-value"></div>
+          </div>
+
+          <!-- SHAP -->
+          <div class="section">
+            <div class="section-label">Факторы (SHAP)</div>
+            <div id="shapList" class="shap-list"></div>
+          </div>
+
+          <!-- Рекомендации -->
+          <div class="section">
+            <div class="section-label">Персональные рекомендации</div>
+            <div id="recommendations" class="recommendations"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/frontend/script.js"></script>
+</body>
+</html>
