@@ -1,80 +1,94 @@
 # Прогноз дохода клиента
 
-Проект позволяет прогнозировать доход клиента банка на основе его финансового и цифрового поведения.
+## Команда проекта
+
+**Команда:** DATA X5
+
+### Участники
+
+**Капитан --- Data Analyst** ФИО: Романенко Валерия Телеграм:
+@val_romanenko Телефон: +79042590549 E-Mail: leraromanenko565@gmail.com
+Город: Vladimir
+
+**Backend-разработчик** ФИО: Досков Марк Телеграм: @Geraksksks Телефон:
++79021785626 E-Mail: markdoskoff@mail.ru Город: Irkutsk
+
+**Data Analyst** ФИО: Черепко Полина Телеграм: @polinaeter Телефон:
++79304070809 E-Mail: cherpolinaa@mail.ru Город: Moscow
+
+**Frontend-разработчик** ФИО: Зеленов Ярослав Телеграм: @My\|fxunter
+Телефон: +79191332319 E-Mail: mobzila567@gmail.com Город: Moscow
+
+**Data Analyst** ФИО: Логачева Полина Телеграм: @polina_logacheva
+Телефон: +79037083108 E-Mail: logacheva.polina@gmail.com Город: Moscow
+
+## Бизнес-постановка задачи
+
+Разработать AI-решение для прогноза доходов клиентов и формирования
+персональных рекомендаций по финансовым продуктам.
+
+## Используемые данные
+
+-   hackathon_income_train.csv
+-   hackathon_income_test.csv
 
 ## Структура проекта
 
-```
-project/
-├─ backend/
-│   └─ app.py
-│   └─ model_utils.py
-│   └─ train_models.py
-├─ frontend/
-│   ├─ index.html
-│   ├─ style.css
-│   └─ script.js
-├─ data/
-│   ├─ hackathon_income_train.csv
-│   └─ hackathon_income_test.csv
-└─ README.md
-```
+    project/
+    ├─ backend/
+    │   ├─ app.py
+    │   ├─ model_utils.py
+    │   └─ train_models.py
+    ├─ frontend/
+    │   ├─ index.html
+    │   ├─ styles.css
+    │   └─ script.js
+    ├─ data/
+    │   ├─ hackathon_income_train.csv
+    │   └─ hackathon_income_test.csv
+    ├─ README.md
+    ├─ requirements.txt
 
-## Установка
+## Особенности модели
 
-1. Создать виртуальное окружение:
+### Финансовые архетипы клиентов
 
-```bash
-python -m venv venv
-```
+1.  ZOOMERS --- молодые, tech-savvy
+2.  MILLENNIALS --- надежные профессионалы
+3.  SMART SAVERS --- умные кредитчики
+4.  ADVENTURER --- путешественники
+5.  PROFESSIONALS --- финансовые эксперты
 
-2. Активировать его:
+## Используемые библиотеки
 
-- Windows: `venv\Scripts\activate`
-- Linux/macOS: `source venv/bin/activate`
+-   pandas
+-   numpy
+-   scikit-learn
+-   flask
+-   joblib
 
-3. Установить зависимости:
+## Установка окружения
 
-```bash
-pip install pandas numpy scikit-learn flask joblib
-```
+1.  python -m venv venv
+2.  Активировать окружение
+3.  pip install pandas numpy scikit-learn flask joblib
 
-## Генерация моделей
+## Генерация модели
 
-```bash
-python backend/train_models.py
-```
+    python backend/train_models.py
 
-## Запуск сервера
+## Запуск API
 
-```bash
-python backend/app.py
-```
+    python backend/app.py
 
-- Сервер доступен по адресу: `http://127.0.0.1:5000/`
-- Эндпоинт `/predict` принимает POST-запрос с JSON:
+Эндпоинт /predict принимает JSON.
 
-```json
-{
-  "age": 30,
-  "turn_cur_cr_avg_v2": 50000,
-  "mob_cnt_days": 120,
-  "device_iphone_avg": 1,
-  "vert_has_app_ru_tinkoff_investing": 1
-}
-```
+## Шаги запуска пайплайна
 
-## Фронтенд
-
-- Открыть `frontend/index.html` в браузере.
-- Ввести данные и нажать кнопку **Прогнозировать доход**.
-- Результат отображается на странице.
-
-## Зависимости
-
-- Python 3.8+
-- pandas
-- numpy
-- scikit-learn
-- flask
-- joblib
+1.  Сохранение модели
+2.  Запуск ML
+3.  Запуск API
+4.  Настройка backend
+5.  Настройка frontend
+6.  Сборка пайплайна
+7.  Тестирование
