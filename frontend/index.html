@@ -1,24 +1,68 @@
-<!DOCTYPE html>
+!<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Прогноз дохода</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Модель дохода — Альфа-Банк</title>
+  <link rel="stylesheet" href="/frontend/styles.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Прогноз дохода клиента</h1>
-    <form id="income-form">
-      <label>Возраст: <input type="number" name="age" required></label>
-      <label>turn_cur_cr_avg_v2: <input type="number" name="turn_cur_cr_avg_v2" required></label>
-      <label>mob_cnt_days: <input type="number" name="mob_cnt_days" required></label>
-      <label>device_iphone_avg: <input type="number" name="device_iphone_avg" required></label>
-      <label>vert_has_app_ru_tinkoff_investing: <input type="number" name="vert_has_app_ru_tinkoff_investing" required></label>
-      <button type="submit">Прогнозировать доход</button>
-    </form>
-    <div id="result"></div>
+  <div class="alpha-app">
+    <header class="alpha-header">
+      <h1>Модель дохода — Альфа-Банк</h1>
+      <p>Точный прогноз — уверенные решения</p>
+    </header>
+
+    <main class="main-container">
+      <div class="alpha-card">
+        <h2 class="alpha-card-header">Выбор клиента</h2>
+
+        <div class="input-group">
+          <input
+            type="text"
+            id="clientIdInput"
+            placeholder="Введите ID клиента (например: 0, 1, 3, 12, 63)"
+          />
+          <button id="searchBtn">Получить прогноз</button>
+        </div>
+
+        <div id="error" class="error-message"></div>
+        <div id="loading" class="loading hidden">
+          <div class="loading-text">Получаем прогноз...</div>
+          <div class="spinner"></div>
+        </div>
+
+        <div id="result" class="result hidden">
+          <div class="client-info">
+            <img id="clientIcon" src="./icons/man_26-45.png" alt="Аватар клиента" class="client-icon" />
+            <div class="client-details">
+              <div><strong>Клиент #<span id="resultId"></span></strong></div>
+              <div><strong>Пол:</strong> <span id="clientGender"></span></div>
+              <div><strong>Возраст:</strong> <span id="clientAge"></span></div>
+            </div>
+          </div>
+
+          <!-- Прогноз -->
+          <div class="section">
+            <div class="section-label">Прогнозируемый доход</div>
+            <div id="income" class="income-value"></div>
+          </div>
+
+          <!-- SHAP -->
+          <div class="section">
+            <div class="section-label">Факторы (SHAP)</div>
+            <div id="shapList" class="shap-list"></div>
+          </div>
+
+          <!-- Рекомендации -->
+          <div class="section">
+            <div class="section-label">Персональные рекомендации</div>
+            <div id="recommendations" class="recommendations"></div>
+          </div>
+      </div>
+    </main>
   </div>
-  <script src="script.js"></script>
+
+  <script src="/frontend/script.js"></script>
 </body>
 </html>
