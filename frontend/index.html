@@ -1,42 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>Income Predictor</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Прогноз дохода</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Прогноз дохода и архетип клиента</h1>
-
-        <form id="predictForm">
-            <label for="age">Возраст:</label>
-            <input type="number" id="age" name="age" required>
-
-            <label for="turn_cur_cr_avg_v2">Текущий кредитный оборот:</label>
-            <input type="number" id="turn_cur_cr_avg_v2" name="turn_cur_cr_avg_v2" required>
-
-            <label for="mob_cnt_days">Активность в мобильном приложении (дни):</label>
-            <input type="number" id="mob_cnt_days" name="mob_cnt_days" required>
-
-            <label for="device_iphone_avg">Использует iPhone (1/0):</label>
-            <input type="number" id="device_iphone_avg" name="device_iphone_avg" min="0" max="1" required>
-
-            <label for="vert_has_app_ru_tinkoff_investing">Есть приложение Tinkoff Investing (1/0):</label>
-            <input type="number" id="vert_has_app_ru_tinkoff_investing" name="vert_has_app_ru_tinkoff_investing" min="0" max="1" required>
-
-            <button type="submit">Прогнозировать</button>
-        </form>
-
-        <div id="result">
-            <h2>Результат:</h2>
-            <p id="predicted_income"></p>
-            <p id="archetype"></p>
-            <p id="story"></p>
-            <p id="insights"></p>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
+  <div class="container">
+    <h1>Прогноз дохода клиента</h1>
+    <form id="income-form">
+      <label>Возраст: <input type="number" name="age" required></label>
+      <label>turn_cur_cr_avg_v2: <input type="number" name="turn_cur_cr_avg_v2" required></label>
+      <label>mob_cnt_days: <input type="number" name="mob_cnt_days" required></label>
+      <label>device_iphone_avg: <input type="number" name="device_iphone_avg" required></label>
+      <label>vert_has_app_ru_tinkoff_investing: <input type="number" name="vert_has_app_ru_tinkoff_investing" required></label>
+      <button type="submit">Прогнозировать доход</button>
+    </form>
+    <div id="result"></div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
