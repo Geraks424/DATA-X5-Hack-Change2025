@@ -8,20 +8,9 @@ from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, S
 from sklearn.impute import SimpleImputer
 from scipy.sparse import issparse
 
-# -----------------------------
-
-# 1. Загрузка данных
-
-# -----------------------------
 
 train_data = pd.read_csv('../data/hackathon_income_train.csv', sep=';', on_bad_lines='skip')
 test_data = pd.read_csv('../data/hackathon_income_test.csv', sep=';', on_bad_lines='skip')
-
-# -----------------------------
-
-# 2. Определяем признаки
-
-# -----------------------------
 
 numerical_features = ['age', 'turn_cur_cr_avg_v2', 'mob_cnt_days']
 categorical_features = ['device_iphone_avg', 'vert_has_app_ru_tinkoff_investing']
@@ -32,22 +21,10 @@ available_categorical = [col for col in categorical_features if col in train_dat
 if not available_numerical and not available_categorical:
     raise ValueError("Нет доступных признаков для предобработки!")
 
-# -----------------------------
-
-# 3. Преобразуем числовые колонки с запятой в float
-
-# -----------------------------
-
 for col in available_numerical:
     train_data[col] = pd.to_numeric(train_data[col].astype(str).str.replace(',', '.'), errors='coerce')
     if col in test_data.columns:
         test_data[col] = pd.to_numeric(test_data[col].astype(str).str.replace(',', '.'), errors='coerce')
-
-# -----------------------------
-
-# 4. Препроцессор для числовых и категориальных признаков
-
-# -----------------------------
 
 transformers = []
 if available_numerical:
@@ -64,12 +41,6 @@ if available_categorical:
 preprocessor = ColumnTransformer(transformers)
 joblib.dump(preprocessor, 'final_preprocessor.pkl')
 
-# -----------------------------
-
-# 5. Определяем целевую переменную
-
-# -----------------------------
-
 possible_targets = ['income', 'Income', 'target', 'Target', 'incomeValue']
 target_column = next((col for col in possible_targets if col in train_data.columns), None)
 if target_column is None:
@@ -80,22 +51,10 @@ mask = y_train.notna()
 X_train_filtered = preprocessor.fit_transform(train_data.loc[mask, available_numerical + available_categorical])
 y_train_filtered = y_train.loc[mask]
 
-# -----------------------------
-
-# 6. Преобразование sparse в ndarray при необходимости
-
-# -----------------------------
-
 if issparse(X_train_filtered):
     X_train_array = X_train_filtered.toarray()
 else:
     X_train_array = X_train_filtered
-
-# -----------------------------
-
-# 7. Стекинг-модель
-
-# -----------------------------
 
 base_estimators = [
 ('rf', RandomForestRegressor(n_estimators=100, random_state=42)),
@@ -109,12 +68,6 @@ passthrough=True
 )
 stacking_model.fit(X_train_array, y_train_filtered)
 joblib.dump(stacking_model, 'final_stacking_model.pkl')
-
-# -----------------------------
-
-# 8. Тестирование (опционально)
-
-# -----------------------------
 
 if target_column in test_data.columns:
     y_test = pd.to_numeric(test_data[target_column].astype(str).str.replace(',', '.'), errors='coerce')

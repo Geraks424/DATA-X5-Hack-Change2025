@@ -14,11 +14,11 @@ def create_client_archetypes(df):
 
 def generate_financial_story(income, archetype, age):
     stories = {
-        'zoomers': [f"🎮 Поколение Z! В {age} лет доход {income:,.0f}₽"],
-        'millennials': [f"💼 Миллениал! Доход {income:,.0f}₽"],
-        'smart_savers': [f"🎯 Финансовый стратег! Доход {income:,.0f}₽"],
-        'adventurer': [f"✈️ Путешественник! Доход {income:,.0f}₽"],
-        'professionals': [f"👔 Профи! Доход {income:,.0f}₽"]
+        'zoomers': [f"Поколение Z! В {age} лет доход {income:,.0f}₽"],
+        'millennials': [f"Миллениал! Доход {income:,.0f}₽"],
+        'smart_savers': [f"Финансовый стратег! Доход {income:,.0f}₽"],
+        'adventurer': [f"Путешественник! Доход {income:,.0f}₽"],
+        'professionals': [f"Профи! Доход {income:,.0f}₽"]
     }
     return stories.get(archetype, [f"Прогноз дохода: {income:,.0f}₽"])
 
