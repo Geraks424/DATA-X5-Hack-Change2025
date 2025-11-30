@@ -8,6 +8,8 @@
 project/
 ├─ backend/
 │   └─ app.py
+│   └─ model_utils.py
+│   └─ train_models.py
 ├─ frontend/
 │   ├─ index.html
 │   ├─ style.css
