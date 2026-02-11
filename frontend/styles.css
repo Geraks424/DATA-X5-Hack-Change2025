@@ -1,0 +1,226 @@
+/* Твои переменные */
+:root {
+  --alpha-red: #ef3124;
+  --alpha-purple: #6e35b8;
+  --alpha-bg: #f8f9fa;
+  --alpha-white: #ffffff;
+  --alpha-text: #1a1a1a;
+  --alpha-border: #e8e8e8;
+  --alpha-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Сброс и базовые стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--alpha-bg);
+  color: var(--alpha-text);
+}
+
+/* Контейнеры */
+.alpha-app {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--alpha-bg) 0%, var(--alpha-white) 100%);
+  padding: 20px;
+}
+
+.main-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Шапка */
+.alpha-header {
+  background: var(--alpha-white);
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--alpha-shadow);
+  margin-bottom: 24px;
+  border-left: 4px solid var(--alpha-red);
+}
+
+.alpha-header h1 {
+  color: var(--alpha-red);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.alpha-header p {
+  color: var(--alpha-text);
+  margin-top: 8px;
+  opacity: 0.8;
+}
+
+/* Карточка */
+.alpha-card {
+  background: var(--alpha-white);
+  border-radius: 12px;
+  box-shadow: var(--alpha-shadow);
+  border: 1px solid var(--alpha-border);
+  padding: 24px;
+}
+
+.alpha-card-header {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--alpha-red);
+  margin-bottom: 16px;
+  border-bottom: 2px solid var(--alpha-red);
+  padding-bottom: 8px;
+}
+
+/* Поле ввода */
+.input-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+#clientIdInput {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px;
+  border: 1px solid var(--alpha-border);
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+#searchBtn {
+  background: var(--alpha-red);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+#searchBtn:hover {
+  opacity: 0.9;
+}
+
+/* Ошибки и загрузка */
+.error-message {
+  color: #ff4d4f;
+  font-size: 14px;
+  margin-top: 8px;
+  display: none;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+}
+
+.loading-text {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--alpha-red);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Секции результата */
+.section {
+  margin-bottom: 20px;
+}
+
+.section-label {
+  font-size: 14px;
+  color: var(--alpha-text);
+  opacity: 0.8;
+  margin-bottom: 6px;
+}
+
+.income-value {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--alpha-red);
+}
+
+.shap-list,
+.recommendations {
+  font-size: 15px;
+}
+
+.shap-list > div {
+  padding: 6px 0;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.shap-list > div span:nth-child(2) {
+  font-weight: bold;
+}
+
+.recommendations > div {
+  padding: 6px 0;
+}
+
+.client-info {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--alpha-border);
+}
+
+.client-icon {
+  width: 100px;
+  height: 112px;
+  object-fit: cover;
+  background: #f0f2f5;
+  border: 2px solid var(--alpha-border);
+  align-content: center;
+}
+
+.client-details {
+  font-size: 15px;
+}
+
+.client-details div {
+  margin: 2px 0;
+}
+
+.client-details strong {
+  color: var(--alpha-red);
+}
+
+/* Скрытие/показ */
+.hidden {
+  display: none !important;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+  .input-group {
+    flex-direction: column;
+  }
+
+  #clientIdInput,
+  #searchBtn {
+    width: 100%;
+  }
+}
